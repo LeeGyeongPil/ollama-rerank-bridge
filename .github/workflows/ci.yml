@@ -1,5 +1,7 @@
 # 키·모델 없이 mock 모드로 전체 흐름을 검증한다(Node.js·TypeScript, Node 20/22/24).
 # package.json engines(">=20")와 매트릭스의 최소 버전(20)을 일치시켰다.
+# 액션은 Node 24 런타임으로 도는 메이저(checkout v6·setup-node v6)를 쓴다 —
+# GitHub 이 러너의 Node 20 액션 런타임 제거일을 2026-09-23 으로 잡았다(checkout v4·setup-node v4 는 node20 런타임).
 name: ci
 on:
   push:
@@ -19,14 +21,42 @@ jobs:
         node: [20, 22, 24]
     env:
       LANG: C.UTF-8
+      NPM_CONFIG_UPDATE_NOTIFIER: "false"
+      NPM_CONFIG_FUND: "false"
+      NPM_CONFIG_AUDIT: "false"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out
+        uses: actions/checkout@v6
+      - name: Set up Node ${{ matrix.node }}
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-      - run: npm ci
-      - run: npm test
-      - run: npm run build --if-present
+          # 의존성이 devDependencies 4개뿐이라 캐시를 쓰지 않는다(캐시 서비스 오류가 실패 원인이 되지 않게).
+          package-manager-cache: false
+      - name: Show environment
+        run: |
+          echo "node $(node -v), npm $(npm -v)"
+          uname -a
+          echo "LANG=$LANG, cpus=$(nproc)"
+      - name: Install (npm ci, runs the prepare build)
+        run: npm ci
+      - name: Test (npm test)
+        run: npm test
+      - name: Build
+        run: npm run build
       - name: Smoke test the built CLI (mock mode, no Ollama needed)
-        run: node dist/src/cli.js eval --mock --json > /dev/null
+        run: |
+          node dist/src/cli.js --version
+          node dist/src/cli.js eval --mock --json > /dev/null
+          node dist/src/cli.js doctor --mock --model qwen3-reranker:0.6b > /dev/null
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          echo "node $(node -v), npm $(npm -v)"
+          ls -la node_modules/@typescript node_modules/.bin || true
+          ls -laR dist | head -n 80 || true
+          for f in "$HOME"/.npm/_logs/*.log; do
+            [ -f "$f" ] || continue
+            echo "== $f"
+            tail -n 120 "$f"
+          done
