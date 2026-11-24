@@ -1,0 +1,82 @@
+[
+  {
+    "query": "What is the capital city of Australia?",
+    "docs": [
+      {"text": "Sydney is the largest city in Australia and hosts the Opera House.", "rel": 0},
+      {"text": "Australia has six states and two major mainland territories.", "rel": 0},
+      {"text": "Canberra is the capital city of Australia and the seat of parliament.", "rel": 2},
+      {"text": "Kangaroos are marsupials found across Australia.", "rel": 0},
+      {"text": "The capital of Canada is Ottawa.", "rel": 0}
+    ]
+  },
+  {
+    "query": "How does photosynthesis produce oxygen in plants?",
+    "docs": [
+      {"text": "Plants grow best in well-drained soil with regular watering.", "rel": 0},
+      {"text": "Oxygen makes up about twenty-one percent of Earth's air.", "rel": 0},
+      {"text": "During photosynthesis plants split water and release oxygen as a by-product.", "rel": 2},
+      {"text": "Factories produce steel and other goods.", "rel": 0},
+      {"text": "Photosynthesis converts light energy into chemical energy in plants.", "rel": 1}
+    ]
+  },
+  {
+    "query": "Which planet has the most moons in the solar system?",
+    "docs": [
+      {"text": "Mars has two small moons named Phobos and Deimos.", "rel": 0},
+      {"text": "The solar system formed about 4.6 billion years ago.", "rel": 0},
+      {"text": "Saturn has the most moons of any planet in the solar system.", "rel": 2},
+      {"text": "Earth is the only planet known to host life.", "rel": 0},
+      {"text": "Jupiter also has dozens of moons, including Ganymede.", "rel": 1}
+    ]
+  },
+  {
+    "query": "How do I undo the last git commit but keep my changes?",
+    "docs": [
+      {"text": "Use git branch to list local branches and git checkout to switch between them.", "rel": 0},
+      {"text": "A git commit records a snapshot of your staged changes.", "rel": 0},
+      {"text": "Run git reset --soft HEAD~1 to undo the last commit but keep your changes staged.", "rel": 2},
+      {"text": "git stash saves your changes temporarily.", "rel": 0},
+      {"text": "To undo the last commit and discard changes, use git reset --hard.", "rel": 1}
+    ]
+  },
+  {
+    "query": "When was the printing press invented?",
+    "docs": [
+      {"text": "Printing on paper became common in Europe during the fifteenth century.", "rel": 0},
+      {"text": "The newspaper industry grew quickly in the nineteenth century.", "rel": 0},
+      {"text": "Johannes Gutenberg invented the printing press around 1440 in Germany.", "rel": 2},
+      {"text": "The press office answers questions from journalists.", "rel": 0},
+      {"text": "Movable type was invented in China before the printing press appeared in Europe.", "rel": 1}
+    ]
+  },
+  {
+    "query": "대한민국의 수도는 어디인가요?",
+    "docs": [
+      {"text": "부산은 대한민국에서 두 번째로 큰 도시이다.", "rel": 0},
+      {"text": "제주도는 대한민국에서 가장 큰 섬이다.", "rel": 0},
+      {"text": "대한민국의 수도는 서울이다.", "rel": 2},
+      {"text": "서울에는 한강이 흐른다.", "rel": 0},
+      {"text": "일본의 수도는 도쿄이다.", "rel": 0}
+    ]
+  },
+  {
+    "query": "김치는 어떻게 만드나요?",
+    "docs": [
+      {"text": "김밥은 밥과 여러 재료를 김으로 말아 만든다.", "rel": 0},
+      {"text": "한국의 겨울철 음식으로 김장 문화가 있다.", "rel": 0},
+      {"text": "김치는 배추를 소금에 절이고 고춧가루 양념을 버무려 만든다.", "rel": 2},
+      {"text": "된장찌개는 된장과 두부로 끓인다.", "rel": 0},
+      {"text": "배추는 가을에 수확한다.", "rel": 0}
+    ]
+  },
+  {
+    "query": "파이썬에서 리스트를 정렬하는 방법",
+    "docs": [
+      {"text": "파이썬은 읽기 쉬운 문법으로 알려진 프로그래밍 언어이다.", "rel": 0},
+      {"text": "리스트는 여러 값을 순서대로 담는 자료형이다.", "rel": 0},
+      {"text": "파이썬에서 리스트를 정렬하려면 sort 메서드나 sorted 함수를 사용한다.", "rel": 2},
+      {"text": "딕셔너리는 키와 값의 쌍을 저장한다.", "rel": 0},
+      {"text": "정렬 알고리즘에는 퀵 정렬과 병합 정렬이 있다.", "rel": 1}
+    ]
+  }
+]
