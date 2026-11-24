@@ -35,7 +35,7 @@ On a minimal Linux image you also need `git` and `ca-certificates`. The package 
 Output of `--version`:
 
 ```text
-0.1.1
+0.1.2
 ```
 
 ## Quick start (practice mock mode, no model needed)
@@ -130,7 +130,7 @@ curl -s -X POST http://127.0.0.1:8100/v1/rerank -H 'content-type: application/js
 ### Read the doctor
 
 ```bash
-npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b
+npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b --timeout 5
 ```
 
 ![doctor: all six checks pass](docs/images/02-doctor-pass.png)
@@ -147,7 +147,7 @@ npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b
 6  Latency estimate                    PASS    about 1 ms per pair; 20 documents at concurrency 2 = about 0.0 s (timeout 5 s)
 ```
 
-The `timeout 5 s` in this mock run is the doctor example setting; `serve` defaults to 60 s.
+The `timeout 5 s` comes from `--timeout 5` in the command above. Without it, doctor and `serve` both default to 60 s.
 
 When something is wrong, it says what to fix:
 
@@ -217,7 +217,7 @@ npm install
 npm test
 ```
 
-`npm test` builds and runs 48 tests with `node --test`. `npm run test:real` runs an optional check against a real model when `OLLAMA_RERANK_BRIDGE_REAL_MODEL` is set, and prints `skipped (no real model)` otherwise.
+`npm test` builds and runs 50 tests with `node --test`. `npm run test:real` runs an optional check against a real model when `OLLAMA_RERANK_BRIDGE_REAL_MODEL` is set, and prints `skipped (no real model)` otherwise.
 
 Bugs and ideas are welcome as issues. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 

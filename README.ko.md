@@ -35,7 +35,7 @@ node dist/src/cli.js --version
 `--version` 출력:
 
 ```text
-0.1.1
+0.1.2
 ```
 
 ## 빠르게 시작하기 (연습용 목 모드, 모델 불필요)
@@ -130,7 +130,7 @@ curl -s -X POST http://127.0.0.1:8100/v1/rerank -H 'content-type: application/js
 ### doctor 읽기
 
 ```bash
-npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b --lang ko
+npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b --lang ko --timeout 5
 ```
 
 ![doctor: 점검 6개 모두 통과](docs/images/02-doctor-pass.ko.png)
@@ -147,7 +147,7 @@ npx ollama-rerank-bridge doctor --mock --model qwen3-reranker:0.6b --lang ko
 6  지연 시간 예상                        PASS  쌍당 약 1ms, 문서 20개 동시성 2 = 약 0.0초 (타임아웃 5초)
 ```
 
-위 예시의 `타임아웃 5초` 는 doctor 예시 설정이며 `serve` 기본값은 60초입니다.
+`타임아웃 5초` 는 위 명령의 `--timeout 5` 때문이며, 생략하면 doctor 와 `serve` 모두 기본값은 60초입니다.
 
 문제가 있으면 무엇을 고칠지 알려 줍니다.
 
@@ -217,7 +217,7 @@ npm install
 npm test
 ```
 
-`npm test` 는 빌드 후 `node --test` 로 테스트 48개를 실행합니다. `npm run test:real` 은 `OLLAMA_RERANK_BRIDGE_REAL_MODEL` 이 설정돼 있으면 실제 모델로 선택 점검을 하고, 없으면 `skipped (no real model)` 을 출력합니다.
+`npm test` 는 빌드 후 `node --test` 로 테스트 50개를 실행합니다. `npm run test:real` 은 `OLLAMA_RERANK_BRIDGE_REAL_MODEL` 이 설정돼 있으면 실제 모델로 선택 점검을 하고, 없으면 `skipped (no real model)` 을 출력합니다.
 
 버그·제안은 이슈로 남겨 주세요. 변경 기록은 [CHANGELOG.md](CHANGELOG.md).
 
