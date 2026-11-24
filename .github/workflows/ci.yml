@@ -1,4 +1,5 @@
 # 키·모델 없이 mock 모드로 전체 흐름을 검증한다(Node.js·TypeScript, Node 20/22/24).
+# package.json engines(">=20")와 매트릭스의 최소 버전(20)을 일치시켰다.
 name: ci
 on:
   push:
@@ -6,12 +7,18 @@ on:
   schedule:
     - cron: "17 3 * * 1"   # 매주 월요일 — 의존성·런타임이 바뀌어 깨지지 않았는지 정기 확인
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
+      fail-fast: false   # 한 Node 버전이 깨져도 나머지 결과를 끝까지 본다
       matrix:
         node: [20, 22, 24]
+    env:
+      LANG: C.UTF-8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,3 +28,5 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build --if-present
+      - name: Smoke test the built CLI (mock mode, no Ollama needed)
+        run: node dist/src/cli.js eval --mock --json > /dev/null
