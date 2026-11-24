@@ -46,7 +46,8 @@ export async function startBridge(o: ServeOptions): Promise<RunningBridge> {
     throw err;
   }
   return {
-    url: `http://${o.host}:${port}`,
+    // IPv6 주소(::1 등)는 URL 에서 대괄호로 감싼다
+    url: `http://${o.host.includes(":") ? `[${o.host}]` : o.host}:${port}`,
     port,
     ollamaUrl: config.ollamaUrl,
     ...(fake ? { fake } : {}),

@@ -58,12 +58,24 @@ export function loadEvalFile(path: string): EvalQuery[] {
   } catch {
     throw new UsageError("error.evalRead", { path });
   }
+  if (text.trim() === "") throw new UsageError("error.evalEmpty", { path });
+  let parsed: unknown;
   try {
-    return parseEvalData(JSON.parse(text), path);
+    parsed = JSON.parse(text);
   } catch (err) {
-    if (err instanceof UsageError) throw err;
-    throw new UsageError("error.evalJson", { path });
+    // 파서 문구는 Node 버전마다 다르다(20 은 "at position N" 만, 22+ 는 줄·칸도). 위치 숫자만 꺼내 줄·칸을 직접 센다.
+    const m = /position (\d+)/.exec(err instanceof Error ? err.message : "");
+    const { line, column } = lineColumn(text, m ? Number(m[1]) : text.length);
+    throw new UsageError("error.evalJson", { path, line, column });
   }
+  return parseEvalData(parsed, path);
+}
+
+/** 0-based character offset -> 1-based line and column. */
+export function lineColumn(text: string, offset: number): { line: number; column: number } {
+  const before = text.slice(0, Math.max(0, Math.min(offset, text.length)));
+  const lines = before.split("\n");
+  return { line: lines.length, column: (lines[lines.length - 1] ?? "").length + 1 };
 }
 
 export interface EvalOptions {

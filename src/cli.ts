@@ -185,17 +185,11 @@ async function runServe(
     console.log(t(lang, "banner.mock"));
     console.log(t(lang, "serve.mockStarted", { url: bridge.ollamaUrl, rerank: MOCK_RERANK_MODEL, embed: MOCK_EMBED_MODEL }));
   }
-  console.log(t(lang, "serve.listening", { host, port: bridge.port, ollama: bridge.ollamaUrl }));
+  console.log(t(lang, "serve.listening", { host: host.includes(":") ? `[${host}]` : host, port: bridge.port, ollama: bridge.ollamaUrl }));
   if (host !== "127.0.0.1" && host !== "localhost" && host !== "::1" && !apiKey) console.log(t(lang, "serve.exposed", { host }));
   const model = v.model ?? MOCK_RERANK_MODEL;
   console.log(t(lang, "serve.try"));
-  console.log(
-    `  curl -s ${bridge.url}/v1/rerank -H 'Content-Type: application/json' -d '` +
-      JSON.stringify({
-        model, query: "What is the capital of China?", top_n: 2,
-        documents: ["Pandas live in the mountains of China.", "The capital of China is Beijing.", "Bananas grow in warm climates."],
-      }) + "'",
-  );
+  console.log(tryItCurl(host, bridge.port, model, Boolean(apiKey)));
   console.log(t(lang, "serve.stop"));
   await new Promise<void>((resolve) => {
     const stop = (): void => resolve();
@@ -204,6 +198,22 @@ async function runServe(
   });
   await bridge.close();
   return 0;
+}
+
+/**
+ * The copy-paste curl line printed by `serve`.
+ * 모든 주소에 바인드(0.0.0.0·::)했어도 같은 컴퓨터에서 붙는 주소는 127.0.0.1 로 보여 주고,
+ * 키를 켰으면 Authorization 헤더 자리표시자를 붙여 그대로 실행해도 401 이 나지 않게 한다.
+ */
+export function tryItCurl(host: string, port: number, model: string, withKey: boolean): string {
+  let shown = host === "0.0.0.0" || host === "::" || host === "" ? "127.0.0.1" : host;
+  if (shown.includes(":") && !shown.startsWith("[")) shown = `[${shown}]`; // IPv6 는 URL 에서 대괄호로 감싼다
+  const auth = withKey ? " -H 'Authorization: Bearer <your key>'" : "";
+  const body = JSON.stringify({
+    model, query: "What is the capital of China?", top_n: 2,
+    documents: ["Pandas live in the mountains of China.", "The capital of China is Beijing.", "Bananas grow in warm climates."],
+  });
+  return `  curl -s http://${shown}:${port}/v1/rerank -H 'Content-Type: application/json'${auth} -d '${body}'`;
 }
 
 // Run only when started as a program (not when imported by tests).

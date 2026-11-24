@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { normalizeOllamaHost, parseAliases, parsePositiveInt } from "../src/config.js";
 import { createLimiter } from "../src/queue.js";
+import { tryItCurl } from "../src/cli.js";
 
 const cli = join(fileURLToPath(import.meta.url), "..", "..", "src", "cli.js");
 
@@ -147,4 +148,15 @@ test("--lang ko prints Korean errors, not English sentences", () => {
   // the same failures stay English with --lang en
   assert.match(run(["serve", "--bogus", "--lang", "en"]).err, /unknown option --bogus/);
   assert.match(run(["eval", "--mock", "--k", "0", "--lang", "en"]).err, /--k must be an integer/);
+});
+
+test("serve's curl example works as printed (key header, loopback for 0.0.0.0, IPv6 brackets)", () => {
+  const plain = tryItCurl("127.0.0.1", 8000, "m", false);
+  assert.match(plain, /curl -s http:\/\/127\.0\.0\.1:8000\/v1\/rerank/);
+  assert.doesNotMatch(plain, /Authorization/);
+  const keyed = tryItCurl("0.0.0.0", 8000, "m", true);
+  assert.match(keyed, /http:\/\/127\.0\.0\.1:8000\/v1\/rerank/);
+  assert.match(keyed, /-H 'Authorization: Bearer <your key>'/);
+  assert.match(tryItCurl("::", 8000, "m", false), /http:\/\/127\.0\.0\.1:8000/);
+  assert.match(tryItCurl("::1", 8000, "m", false), /http:\/\/\[::1\]:8000/);
 });
