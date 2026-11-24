@@ -1,0 +1,50 @@
+{
+  "name": "ollama-rerank-bridge",
+  "version": "0.1.0",
+  "description": "Adds a Cohere/Jina/vLLM/TEI-compatible /v1/rerank endpoint on top of a running Ollama, plus doctor and eval commands.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeeGyeongPil/ollama-rerank-bridge.git"
+  },
+  "homepage": "https://github.com/LeeGyeongPil/ollama-rerank-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/LeeGyeongPil/ollama-rerank-bridge/issues"
+  },
+  "type": "module",
+  "bin": {
+    "ollama-rerank-bridge": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "examples",
+    "README.md",
+    "README.ko.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test dist/test/*.test.js",
+    "test:real": "tsc -p tsconfig.json && node dist/test/real/real.js",
+    "start": "npm run build && node dist/src/cli.js serve --mock",
+    "prepare": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "ollama",
+    "rerank",
+    "reranker",
+    "rag",
+    "qwen3-reranker",
+    "cohere",
+    "jina",
+    "tei"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "^7.0.2"
+  }
+}
