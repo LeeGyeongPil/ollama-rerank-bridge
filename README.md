@@ -35,7 +35,7 @@ On a minimal Linux image you also need `git` and `ca-certificates`. The package 
 Output of `--version`:
 
 ```text
-0.1.0
+0.1.1
 ```
 
 ## Quick start (practice mock mode, no model needed)

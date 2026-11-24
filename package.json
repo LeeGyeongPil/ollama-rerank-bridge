@@ -1,6 +1,6 @@
 {
   "name": "ollama-rerank-bridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Adds a Cohere/Jina/vLLM/TEI-compatible /v1/rerank endpoint on top of a running Ollama, plus doctor and eval commands.",
   "license": "MIT",
   "repository": {

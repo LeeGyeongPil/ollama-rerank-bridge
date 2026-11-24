@@ -35,7 +35,7 @@ node dist/src/cli.js --version
 `--version` 출력:
 
 ```text
-0.1.0
+0.1.1
 ```
 
 ## 빠르게 시작하기 (연습용 목 모드, 모델 불필요)
